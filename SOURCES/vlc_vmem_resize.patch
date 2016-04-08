@@ -1,0 +1,26 @@
+diff -uraN a/modules/video_output/vmem.c b/modules/video_output/vmem.c
+--- a/modules/video_output/vmem.c	2015-02-02 20:42:29.000000000 +0100
++++ b/modules/video_output/vmem.c	2016-03-10 11:58:55.262352719 +0100
+@@ -142,6 +142,9 @@
+     video_format_t fmt;
+     video_format_ApplyRotation(&fmt, &vd->fmt);
+ 
++    unsigned int original_w = fmt.i_width;
++    unsigned int original_h = fmt.i_height;
++
+     if (setup != NULL) {
+         char chroma[5];
+ 
+@@ -177,8 +180,10 @@
+         sys->cleanup = NULL;
+     }
+     fmt.i_x_offset = fmt.i_y_offset = 0;
+-    fmt.i_visible_width = fmt.i_width;
+-    fmt.i_visible_height = fmt.i_height;
++    if(fmt.i_width!=original_w && fmt.i_height!=original_h) {
++        fmt.i_visible_width = fmt.i_width;
++        fmt.i_visible_height = fmt.i_height;
++    }
+ 
+     if (!fmt.i_chroma) {
+         msg_Err(vd, "vmem-chroma should be 4 characters long");

@@ -1,0 +1,21 @@
+diff -uraN a/configure.ac b/configure.ac
+--- a/configure.ac	2016-03-10 15:22:24.585079964 +0100
++++ b/configure.ac	2016-03-10 15:19:40.914605585 +0100
+@@ -7,7 +7,7 @@
+ VERSION_MINOR=2
+ VERSION_REVISION=2
+ VERSION_EXTRA=0
+-VERSION_DEV=
++VERSION_DEV="qge1"
+ 
+ PKGDIR="vlc"
+ AC_SUBST(PKGDIR)
+@@ -4206,7 +4206,7 @@
+ dnl
+ dnl  Stuff used by the program
+ dnl
+-VERSION_MESSAGE="${VERSION} ${CODENAME}"
++VERSION_MESSAGE="${VERSION} ${CODENAME} ${VERSION_DEV}"
+ COPYRIGHT_MESSAGE="Copyright © ${COPYRIGHT_YEARS} the VideoLAN team"
+ AC_DEFINE_UNQUOTED(VERSION_MESSAGE, "${VERSION_MESSAGE}", [Simple version string])
+ AC_DEFINE_UNQUOTED(COPYRIGHT_MESSAGE, "${COPYRIGHT_MESSAGE}", [Copyright string])
