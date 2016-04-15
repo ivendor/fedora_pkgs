@@ -1,7 +1,7 @@
 Summary:            Script & GNOME Tools for switch between Nvidia and Intel GPU on Optimus Laptop
 Name:               nvidia-optimus
 Version:            1.0.0
-Release:            1%{?dist}
+Release:            2%{?dist}
 License:            GPLv3
 Group:              System Environment/Kernel
 Source:             %{name}-%{version}.tar.gz
@@ -42,13 +42,10 @@ install -m 644 gnome-shell.desktop %{buildroot}/var/lib/gdm/.config/autostart/
 install -m 644 gpu-chooser@ivendor/*.js* %{buildroot}/%{_datadir}/gnome-shell/extensions/gpu-chooser@ivendor/
 install -m 644 gpu-chooser@ivendor/icons/*.svg %{buildroot}/%{_datadir}/gnome-shell/extensions/gpu-chooser@ivendor/icons/
 
-ln -s 20-intel.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/20-gpu.conf
-
 %files
 %defattr(-,root,root,-)
 %{_sysconfdir}/X11/xinit/xinitrc.d/10-modesetting.sh
 %{_sysconfdir}/X11/xorg.conf.d/20-*.conf.disabled
-%{_sysconfdir}/X11/xorg.conf.d/20-gpu.conf
 %{_sysconfdir}/ld.so.conf.d/nvidia.conf.disabled
 %{_sysconfdir}/prelink.conf.d/nvidia.conf.disabled
 /usr/lib/systemd/scripts/gpuswitchcleaner
