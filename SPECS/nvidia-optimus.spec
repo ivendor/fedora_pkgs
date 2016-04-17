@@ -1,7 +1,7 @@
 Summary:            Script & GNOME Tools for switch between Nvidia and Intel GPU on Optimus Laptop
 Name:               nvidia-optimus
 Version:            1.0.0
-Release:            1%{?dist}
+Release:            3%{?dist}
 License:            GPLv3
 Group:              System Environment/Kernel
 Source:             %{name}-%{version}.tar.gz
