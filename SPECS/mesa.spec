@@ -50,12 +50,12 @@
 
 %global sanitize 1
 
-%global commit f30f6e26252ed09eca1922f7c8633c7c7b6e50fe
+%global commit d3c98c73dc6547700e7c28f90019559f638b5d8c
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
 Summary: Mesa graphics libraries
 Name: mesa
-Version: 11.3.0
+Version: 11.3.0	
 Release: 0.21.git%{shortcommit}%{?dist}
 License: MIT
 URL: http://www.mesa3d.org

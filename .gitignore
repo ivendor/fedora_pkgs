@@ -1,0 +1,7 @@
+BUILD
+BUILDROOT
+RPMS
+SRPMS
+NVIDIA*.run
+vlc-*.tar.xz
+sdk-*.zip
