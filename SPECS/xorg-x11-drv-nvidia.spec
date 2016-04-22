@@ -7,7 +7,7 @@
 
 Name:            xorg-x11-drv-nvidia
 Epoch:           1
-Version:         364.16
+Version:         364.19
 Release:         1%{?dist}
 Summary:         NVIDIA's proprietary display driver for NVIDIA graphic cards
 
@@ -442,9 +442,9 @@ fi ||:
 %{_datadir}/pixmaps/*.png
 %{_mandir}/man1/nvidia-settings.*
 %{_mandir}/man1/nvidia-xconfig.*
-%ifarch x86_64
-%{_mandir}/man1/nvidia-gridd.*
-%endif
+#%ifarch x86_64
+#%{_mandir}/man1/nvidia-gridd.*
+#%endif
 
 %files kmodsrc
 %dir %{_datadir}/nvidia-kmod-%{version}

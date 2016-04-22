@@ -83,6 +83,9 @@ Patch3:  0003-evergreen-big-endian.patch
 Patch4:  0004-bigendian-assert.patch
 
 # To have sha info in glxinfo
+BuildRequires: autoconf automake libtool
+BuildRequires: flex bison
+
 BuildRequires: git-core
 
 BuildRequires: pkgconfig autoconf automake libtool

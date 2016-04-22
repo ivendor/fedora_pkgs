@@ -10,6 +10,8 @@ License:	MIT
 URL:		http://freedesktop.org/wiki/Software/vaapi
 Source0:	%{name}-%{shortcommit}.tar.xz
 	
+BuildRequires: autoconf automake libtool
+BuildRequires: flex bison
 BuildRequires:	libudev-devel
 BuildRequires:	libXext-devel
 BuildRequires:	libXfixes-devel
