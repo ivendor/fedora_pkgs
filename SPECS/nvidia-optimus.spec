@@ -7,7 +7,7 @@ Group:              System Environment/Kernel
 Source:             %{name}-%{version}.tar.gz
 URL:                https://github.com/ivendor
 BuildArch: 	  noarch
-Requires:          akmod-nvidia,xorg-x11-drv-nvidia-libs,xorg-x11-drv-nvidia,mesa-libGL,mesa-libglapi,mesa-dri-drivers,gnome-shell, gdm
+Requires:          akmod-nvidia,xorg-x11-drv-nvidia-libs,xorg-x11-drv-nvidia,mesa-libGL,mesa-libglapi,mesa-dri-drivers,gnome-shell, gdm, kernel-devel
 
 %description
 Script & GNOME Tools for switch between Nvidia and Intel GPU on Optimus Laptop
@@ -38,7 +38,7 @@ install -m 644 gpuswitchcleaner.service %{buildroot}/usr/lib/systemd/system/
 install -m 755 gpu-choice.sh %{buildroot}/%{_sbindir}
 install -m 755 modesetting.sh %{buildroot}/%{_sbindir}
 install -m 644 optimus %{buildroot}/%{_sysconfdir}/default/
-install -m 644 gnome-shell.desktop %{buildroot}/var/lib/gdm/.config/autostart/
+install -m 644 org.gnome.Shell.desktop %{buildroot}/var/lib/gdm/.config/autostart/
 install -m 644 gpu-chooser@ivendor/*.js* %{buildroot}/%{_datadir}/gnome-shell/extensions/gpu-chooser@ivendor/
 install -m 644 gpu-chooser@ivendor/icons/*.svg %{buildroot}/%{_datadir}/gnome-shell/extensions/gpu-chooser@ivendor/icons/
 
@@ -61,7 +61,7 @@ ln -s 20-intel.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/20-gpu.
 %defattr(-,gdm,gdm,-)
 %attr(-,gdm,gdm) /var/lib/gdm/.config
 %attr(-,gdm,gdm) /var/lib/gdm/.config/autostart
-/var/lib/gdm/.config/autostart/gnome-shell.desktop
+/var/lib/gdm/.config/autostart/org.gnome.Shell.desktop
 
 %post
 /usr/bin/systemctl daemon-reload
@@ -70,7 +70,9 @@ ln -s 20-intel.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/20-gpu.
 echo "You should blacklist nouveau from kernel command line using rdblacklist=nouveau"
 echo "You should enable X11 for gdm in /etc/gdm/custom.conf using WaylandEnable=False"
 %preun
+if [ $1 -eq 0 ] ; then
 /usr/bin/systemctl disable gpuswitchcleaner
+fi
 
 %changelog
 * Thu Dec 10 2015 Tiziano Carotti <t.carotti@quanticresearch.com> - 1.0.0-1
