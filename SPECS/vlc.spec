@@ -21,7 +21,7 @@
 %global _with_fluidsynth 1
 %if 0%{?fedora}
 %global _with_freerdp 1
-%global _with_projectm  1
+%global _with_projectm  0
 %global _with_schroedinger 1
 %endif
 %ifarch x86_64 i686
@@ -31,7 +31,7 @@
 
 Summary:	The cross-platform open-source multimedia framework, player and server
 Name:		vlc
-Version:	2.2.2
+Version:	2.2.4
 Release:	1%{?dist}
 License:	GPLv2+
 Group:		Applications/Multimedia
@@ -40,7 +40,8 @@ Source0:	http://download.videolan.org/pub/videolan/vlc/%{version}/vlc-%{version}
 Patch0:          vlc_avcodec_align.patch
 Patch1:          vlc_vmem_resize.patch
 Patch2:          vlc_qge_version.patch
-Patch3:          vlc_noqt5.patch
+Patch4:		vlc_2.2.x_ffmpeg3-1.patch
+Patch5:		vlc_2.2.x_freerdp2.patch
 
 BuildRequires:	desktop-file-utils
 
@@ -90,7 +91,6 @@ BuildRequires:	libmodplug-devel
 BuildRequires:	libmp4v2-devel
 BuildRequires:	libmpcdec-devel
 BuildRequires:	libmtp-devel >= 1.0.0
-%{?_with_projectm:BuildRequires: libprojectM-qt-devel}
 BuildRequires:	libproxy-devel
 BuildRequires:	librsvg2-devel >= 2.9.0
 BuildRequires:	libssh2-devel
@@ -114,7 +114,9 @@ BuildRequires:	lirc-devel
 BuildRequires:  kernel-headers
 BuildRequires:	pkgconfig(gl)
 BuildRequires:	pkgconfig(glu)
+%if 0%{?fedora} < 24
 BuildRequires:	libmusicbrainz-devel
+%endif
 BuildRequires:	libsamplerate-devel
 BuildRequires:	libshout-devel
 BuildRequires:	lua-devel
@@ -224,16 +226,18 @@ JACK audio plugin for the VLC media player.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch5 -p1
+
 %{?_with_bootstrap:
 rm aclocal.m4 m4/lib*.m4 m4/lt*.m4 || :
 ./bootstrap
 }
 
-
+%patch4 -p1
 
 %build
 
+CXXFLAGS="${CXXFLAGS: -std=gnu++98}" ; export CXXFLAGS ; 
 
 %configure \
 	--disable-dependency-tracking		\
@@ -246,6 +250,7 @@ rm aclocal.m4 m4/lib*.m4 m4/lt*.m4 || :
 	--disable-silent-rules			\
 	--with-pic				\
 	--disable-rpath				\
+         --disable-projectm                        \
 	--with-binary-version=%{version}	\
 	--with-kde-solid=%{_kde4_appsdir}/solid/actions \
 	--enable-lua				\
@@ -283,7 +288,6 @@ rm aclocal.m4 m4/lib*.m4 m4/lt*.m4 || :
 	--enable-pulse				\
 	--enable-ncurses			\
 	--enable-lirc
-
 
 %if 0
 # remove rpath from libtool
@@ -402,9 +406,6 @@ fi || :
 #{_libdir}/vlc/plugins/video_filter/libpanoramix_plugin.so
 }
 %{_libdir}/vlc/plugins/gui/libskins2_plugin.so
-%{?_with_projectm:
-%{_libdir}/vlc/plugins/visualization/libprojectm_plugin.so
-}
 %{_libdir}/vlc/plugins/audio_output/libpulse_plugin.so
 
 %files core -f %{name}.lang
@@ -450,9 +451,6 @@ fi || :
 %exclude %{_libdir}/vlc/plugins/video_filter/libopencv_example_plugin.so
 %exclude %{_libdir}/vlc/plugins/video_filter/libopencv_wrapper_plugin.so
 }
-%{?_with_projectm:
-%exclude %{_libdir}/vlc/plugins/visualization/libprojectm_plugin.so
-}
 %exclude %{_libdir}/vlc/plugins/audio_output/libjack_plugin.so
 %exclude %{_libdir}/vlc/plugins/audio_output/libpulse_plugin.so
 %ghost %{_libdir}/vlc/plugins.dat
@@ -490,6 +488,18 @@ fi || :
 
 
 %changelog
+* Mon Jun 06 2016 Nicolas Chauvet <kwizart@gmail.com> - 2.2.4-1
+- Update to 2.2.4
+
+* Wed May 04 2016 Nicolas Chauvet <kwizart@gmail.com> - 2.2.3-1
+- Update to 2.2.3
+
+* Sat Feb 06 2016 Nicolas Chauvet <kwizart@gmail.com> - 2.2.2-1
+- Update to 2.2.2
+
+* Tue Oct 06 2015 Nicolas Chauvet <kwizart@gmail.com> - 2.2.2-0.1
+- Update to 2.2.2 pre-version
+
 * Sat May 16 2015 Nicolas Chauvet <kwizart@gmail.com> - 2.2.1-6
 - Rebuilt for x265
 
