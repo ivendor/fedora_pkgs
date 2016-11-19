@@ -1,0 +1,21 @@
+diff -Naur a/modules.cfg b/modules.cfg
+--- a/modules.cfg	2016-08-28 18:47:56.000000000 +0200
++++ b/modules.cfg	2016-09-12 14:13:53.007665284 +0200
+@@ -120,7 +120,7 @@
+ # TrueType GX/AAT table validation.  Needs ftgxval.c below.
+ #
+ # No FT_CONFIG_OPTION_PIC support.
+-# AUX_MODULES += gxvalid
++AUX_MODULES += gxvalid
+ 
+ # Support for streams compressed with gzip (files with suffix .gz).
+ #
+@@ -143,7 +143,7 @@
+ # OpenType table validation.  Needs ftotval.c below.
+ #
+ # No FT_CONFIG_OPTION_PIC support.
+-# AUX_MODULES += otvalid
++AUX_MODULES += otvalid
+ 
+ # Auxiliary PostScript driver component to share common code.
+ #
