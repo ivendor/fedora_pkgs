@@ -1,7 +1,7 @@
 Summary:            Script & GNOME Tools for switch between Nvidia and Intel GPU on Optimus Laptop
 Name:               nvidia-optimus
-Version:            1.0.1
-Release:            3%{?dist}
+Version:            1.0.2
+Release:            1%{?dist}
 License:            GPLv3
 Group:              System Environment/Kernel
 Source:             %{name}-%{version}.tar.gz
@@ -21,6 +21,7 @@ Script & GNOME Tools for switch between Nvidia and Intel GPU on Optimus Laptop
 mkdir -p %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/
 mkdir -p %{buildroot}/%{_sysconfdir}/X11/xinit/xinitrc.d
 mkdir -p %{buildroot}/%{_sysconfdir}/ld.so.conf.d
+mkdir -p %{buildroot}/%{_sysconfdir}/modprobe.d
 mkdir -p %{buildroot}/%{_sysconfdir}/prelink.conf.d
 mkdir -p %{buildroot}/%{_sysconfdir}/default
 mkdir -p %{buildroot}/%{_sbindir}
@@ -31,6 +32,7 @@ mkdir -p %{buildroot}/%{_datadir}/gnome-shell/extensions/gpu-chooser@ivendor/ico
 
 install -m 755 10-modesetting.sh %{buildroot}/%{_sysconfdir}/X11/xinit/xinitrc.d/
 install -m 644 20-*.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/
+install -m 644 nvidia.conf %{buildroot}/%{_sysconfdir}/modprobe.d/
 install -m 644 nvidia.conf.disabled %{buildroot}/%{_sysconfdir}/ld.so.conf.d/
 install -m 644 prenvidia.conf.disabled %{buildroot}/%{_sysconfdir}/prelink.conf.d/nvidia.conf.disabled
 install -m 755 gpuswitchcleaner %{buildroot}/usr/lib/systemd/scripts/
@@ -49,6 +51,7 @@ ln -s 20-intel.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/20-gpu.
 %{_sysconfdir}/X11/xinit/xinitrc.d/10-modesetting.sh
 %{_sysconfdir}/X11/xorg.conf.d/20-*.conf.disabled
 %{_sysconfdir}/X11/xorg.conf.d/20-gpu.conf
+%{_sysconfdir}/modprobe.d/nvidia.conf
 %{_sysconfdir}/ld.so.conf.d/nvidia.conf.disabled
 %{_sysconfdir}/prelink.conf.d/nvidia.conf.disabled
 /usr/lib/systemd/scripts/gpuswitchcleaner
@@ -75,6 +78,9 @@ if [ $1 -eq 0 ] ; then
 fi
 
 %changelog
+* Tue Nov 22 2016 Tiziano Carotti <t.carotti@quanticresearch.com> - 1.0.2-1
+- Nvidia KMS Modeset enabler
+
 * Sat Nov 5 2016 Tiziano Carotti <t.carotti@quanticresearch.com> - 1.0.1-1
 - Support for libglvnd nvidia driver
 
