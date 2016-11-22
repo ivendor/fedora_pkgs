@@ -32,7 +32,7 @@ mkdir -p %{buildroot}/%{_datadir}/gnome-shell/extensions/gpu-chooser@ivendor/ico
 
 install -m 755 10-modesetting.sh %{buildroot}/%{_sysconfdir}/X11/xinit/xinitrc.d/
 install -m 644 20-*.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/
-install -m 644 nvidia.conf %{buildroot}/%{_sysconfdir}/modprobe.d/
+install -m 644 nvidia-modeset.conf.disabled %{buildroot}/%{_sysconfdir}/modprobe.d/
 install -m 644 nvidia.conf.disabled %{buildroot}/%{_sysconfdir}/ld.so.conf.d/
 install -m 644 prenvidia.conf.disabled %{buildroot}/%{_sysconfdir}/prelink.conf.d/nvidia.conf.disabled
 install -m 755 gpuswitchcleaner %{buildroot}/usr/lib/systemd/scripts/
@@ -51,7 +51,7 @@ ln -s 20-intel.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/20-gpu.
 %{_sysconfdir}/X11/xinit/xinitrc.d/10-modesetting.sh
 %{_sysconfdir}/X11/xorg.conf.d/20-*.conf.disabled
 %{_sysconfdir}/X11/xorg.conf.d/20-gpu.conf
-%{_sysconfdir}/modprobe.d/nvidia.conf
+%{_sysconfdir}/modprobe.d/nvidia-modeset.conf.disabled
 %{_sysconfdir}/ld.so.conf.d/nvidia.conf.disabled
 %{_sysconfdir}/prelink.conf.d/nvidia.conf.disabled
 /usr/lib/systemd/scripts/gpuswitchcleaner
@@ -70,6 +70,7 @@ ln -s 20-intel.conf.disabled %{buildroot}/%{_sysconfdir}/X11/xorg.conf.d/20-gpu.
 /usr/bin/systemctl daemon-reload
 /usr/bin/systemctl enable gpuswitchcleaner
 /usr/bin/systemctl enable akmods
+sed -i s/BUSXXX/`lspci|grep NVIDIA|grep 3D|cut -d " " -f 1|sed  's/\./:/g'`/ /etc/X11/xorg.conf.d/20-nvidia-optimus.conf.disabled
 echo "You should blacklist nouveau from kernel command line using rdblacklist=nouveau"
 echo "You should enable X11 for gdm in /etc/gdm/custom.conf using WaylandEnable=False"
 %preun
