@@ -43,6 +43,7 @@ Patch2:          vlc_qge_version.patch
 Patch3:		vlc-2.2.4-ffmpeg3-1.patch
 Patch4:		vlc-2.2.4-gcc6_fixes-1.patch
 Patch5:		vlc_atomic_fix.patch
+Patch6:		vlc_zip_no_seek.patch
 
 BuildRequires:	desktop-file-utils
 
@@ -235,7 +236,7 @@ rm aclocal.m4 m4/lib*.m4 m4/lt*.m4 || :
 %patch3 -p1
 %patch4 -p1
 %patch5 -p1
-
+%patch6 -p1
 
 
 %build

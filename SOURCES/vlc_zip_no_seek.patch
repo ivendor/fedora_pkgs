@@ -1,0 +1,18 @@
+diff -Naur a/modules/access/zip/zipaccess.c b/modules/access/zip/zipaccess.c
+--- a/modules/access/zip/zipaccess.c	2015-02-02 20:42:29.000000000 +0100
++++ b/modules/access/zip/zipaccess.c	2017-01-14 20:27:00.373846550 +0100
+@@ -225,13 +225,13 @@
+ 
+     switch( i_query )
+     {
+-        case ACCESS_CAN_SEEK:
+         case ACCESS_CAN_PAUSE:
+         case ACCESS_CAN_CONTROL_PACE:
+             pb_bool = (bool*)va_arg( args, bool* );
+             *pb_bool = true;
+             break;
+ 
++        case ACCESS_CAN_SEEK:
+         case ACCESS_CAN_FASTSEEK:
+             pb_bool = (bool*)va_arg( args, bool* );
+             *pb_bool = false;
