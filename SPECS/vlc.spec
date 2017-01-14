@@ -1,4 +1,4 @@
-#global vlc_rc			-rc2
+#global vlc_rc			-pre20151006
 %global _with_bootstrap		1
 %global _with_workaround_circle_deps 1
 %if 0%{?!_without_freeworld:1}
@@ -20,8 +20,8 @@
 %global _with_opencv    1
 %global _with_fluidsynth 1
 %if 0%{?fedora}
-%global _with_freerdp 1
-%global _with_projectm  0
+%global _with_freerdp 0
+%global _with_projectm  1
 %global _with_schroedinger 1
 %endif
 %ifarch x86_64 i686
@@ -40,8 +40,9 @@ Source0:	http://download.videolan.org/pub/videolan/vlc/%{version}/vlc-%{version}
 Patch0:          vlc_avcodec_align.patch
 Patch1:          vlc_vmem_resize.patch
 Patch2:          vlc_qge_version.patch
-Patch4:		vlc_2.2.x_ffmpeg3-1.patch
-Patch5:		vlc_2.2.x_freerdp2.patch
+Patch3:		vlc-2.2.4-ffmpeg3-1.patch
+Patch4:		vlc-2.2.4-gcc6_fixes-1.patch
+Patch5:		vlc_atomic_fix.patch
 
 BuildRequires:	desktop-file-utils
 
@@ -91,6 +92,7 @@ BuildRequires:	libmodplug-devel
 BuildRequires:	libmp4v2-devel
 BuildRequires:	libmpcdec-devel
 BuildRequires:	libmtp-devel >= 1.0.0
+%{?_with_projectm:BuildRequires: libprojectM-qt-devel}
 BuildRequires:	libproxy-devel
 BuildRequires:	librsvg2-devel >= 2.9.0
 BuildRequires:	libssh2-devel
@@ -226,18 +228,18 @@ JACK audio plugin for the VLC media player.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch5 -p1
-
 %{?_with_bootstrap:
 rm aclocal.m4 m4/lib*.m4 m4/lt*.m4 || :
 ./bootstrap
 }
-
+%patch3 -p1
 %patch4 -p1
+%patch5 -p1
+
+
 
 %build
 
-CXXFLAGS="${CXXFLAGS: -std=gnu++98}" ; export CXXFLAGS ; 
 
 %configure \
 	--disable-dependency-tracking		\
@@ -250,7 +252,6 @@ CXXFLAGS="${CXXFLAGS: -std=gnu++98}" ; export CXXFLAGS ;
 	--disable-silent-rules			\
 	--with-pic				\
 	--disable-rpath				\
-         --disable-projectm                        \
 	--with-binary-version=%{version}	\
 	--with-kde-solid=%{_kde4_appsdir}/solid/actions \
 	--enable-lua				\
@@ -287,7 +288,9 @@ CXXFLAGS="${CXXFLAGS: -std=gnu++98}" ; export CXXFLAGS ;
 	--enable-jack				\
 	--enable-pulse				\
 	--enable-ncurses			\
-	--enable-lirc
+	--enable-lirc				\
+	--disable-freerdp
+
 
 %if 0
 # remove rpath from libtool
@@ -406,6 +409,9 @@ fi || :
 #{_libdir}/vlc/plugins/video_filter/libpanoramix_plugin.so
 }
 %{_libdir}/vlc/plugins/gui/libskins2_plugin.so
+%{?_with_projectm:
+%{_libdir}/vlc/plugins/visualization/libprojectm_plugin.so
+}
 %{_libdir}/vlc/plugins/audio_output/libpulse_plugin.so
 
 %files core -f %{name}.lang
@@ -450,6 +456,9 @@ fi || :
 %{?_with_opencv:
 %exclude %{_libdir}/vlc/plugins/video_filter/libopencv_example_plugin.so
 %exclude %{_libdir}/vlc/plugins/video_filter/libopencv_wrapper_plugin.so
+}
+%{?_with_projectm:
+%exclude %{_libdir}/vlc/plugins/visualization/libprojectm_plugin.so
 }
 %exclude %{_libdir}/vlc/plugins/audio_output/libjack_plugin.so
 %exclude %{_libdir}/vlc/plugins/audio_output/libpulse_plugin.so
